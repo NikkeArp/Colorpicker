@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="{% block language %}en{% endblock language %}">{% block html %}
+<head>{% block head %}
+  {% block meta %}<!---- Meta-data ---->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <meta charset="{% block charset %}UTF-8{% endblock charset %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  {% endblock meta %}
+  <!---- Title ---->
+  <title>{% block title %}Website-Name{% endblock title %}</title>
+  {% block favicon %} 
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+  <link rel="mask-icon" href="{{ url_for('static', filename='favicon/safari-pinned-tab.svg') }}" color="#5bbad5">
+  {% endblock favicon %}
+  <!-- Web Manifest -->
+  {% block manifest %}<link rel="manifest" href="{{ url_for('static', filename='colorpicker.webmanifest') }}">{% endblock manifest %}  
+  {% block stylesheets %}  <!---- Inherited Styles ---->
+  <link rel="stylesheet" href="{% block bsStyle %}https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css {% endblock bsStyle %}">
+  {% endblock stylesheets %}{% block scripts %}  <!---- Inherited Scripts---->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  {% endblock scripts %}
+  {% endblock head %}
+</head>
+<body>{% block body %}
+  <!----- Header ----->
+  <header>
+    {% block header %}{% endblock header %}
+  </header>
+  <!----- Content ----->
+  <section>
+    {% block content %}{% endblock content %}
+  </section>
+  <!----- Footer ----->
+  <footer>
+    {% block footer %}{% endblock footer %}
+  </footer>  
+{% endblock body %}</body>
+{% endblock html %}</html>

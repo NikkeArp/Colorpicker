@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block stylesheets %}
+{{ super() }}
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='colorpicker.css') }}">
+{% endblock stylesheets %}
+{% block scripts %}
+{{ super() }}
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='colorpicker.js') }}"></script>{% endblock scripts %}
+{% block title %}Colorpicker{% endblock title %}
+{% block content %}
+    <article>
+      <div id="color-app">
+        <div class="colorpicker">
+          <div id="color-box">
+            <canvas id="color-main" width="400">
+            </canvas>
+            <div id="box-pointer"></div>
+            <canvas id="color-slider" height="20" width="400">
+            </canvas>
+            <div id="slider-pointer"></div>
+            <button id="color-result" class="btn" value="#000000">#000000</button>
+          </div>
+          <!------- Color-values ------->
+          <div class="color-results">
+            <div class="color-values">
+              <table>
+                <tr>
+                  <td><label for="red-val">R</label></td>
+                  <td><label class="color-val-inpt" id="red-val">000</label></td>
+                  <td>
+                    <div class="saved-color" id="color1">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="saved-color" id="color2">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </tr>
+                  <tr>
+                    <td><label for="green-val">G</label></td>
+                  </td>
+                  <td><label class="color-val-inpt" id="green-val">000</label></td>
+                  <td>
+                    <div class="saved-color" id="color3">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="saved-color" id="color4">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label for="blue-val">B</label></td>
+                  <td><label class="color-val-inpt" id="blue-val">000</label></td>
+                  <td>
+                    <div class="saved-color" id="color5">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="saved-color" id="color6">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label for="RGB-val" class="">RGB</label></td>
+                  <td><label class="color-val-inpt" id="RGB-val">000,000,000</label></td>
+                  <td>
+                    <div class="saved-color" id="color7">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="saved-color" id="color8">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label for="hex-val" class="">Hex</label></td>
+                  <td><label class="color-val-inpt" id="hex-val">#000000</label></td>
+                  <td>
+                    <div class="saved-color" id="color9">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="saved-color" id="color10">
+                      <label class="color-value">#000000</label>
+                      <div class="saved-sample"></div>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="colorpicker" id="sidepanel">
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+          <div><label>#000000</label></div>
+        </div>
+      </div>
+    </article>
+{% endblock content %}
+{% block footer %}<div class="container-fluid text-center">
+      <span id="footer-text">&copy; Copyright 2019 by <a class="btn btn-sm" id="contact-btn" href="./licence">Niklas Seppälä</a></span>
+    </div>{% endblock footer %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block stylesheets %}
+{{ super() }}
+<!-- Styles -->
+<link rel="stylesheet" href="{{ url_for('static', filename='colorpicker.css') }}">
+{% endblock stylesheets %}
+{% block title %}Colorpicker - Licence{% endblock title %}
+{% block header %}
+<div class="jumbotron" style="background-color: #4f5230">
+  <h1>Colorpicker</h1>
+  <h2>Author: Niklas Seppälä - Student at University of Jyväskylä</h2>
+  <h4>Email: nitasepp@student.jyu.fi</h4>
+  <h4>Date: 03.04.2019</h4>
+  <h5>Licence: MIT</h5>
+</div>
+<div class="container">
+  <h3>Summary</h3>
+  <p>
+    Colorpicker operates with two canvases. Colorbox and colorslider.
+    User uses slider to select base color and then selects color from
+    colorbox. Colorbox adds ligth and dark gradients to base color.
+    Selected color's data is displayd in following formats:</p>
+  <ul>
+    <li>color's red-value</li>
+    <li>color's blue-value</li>
+    <li>color's green-value</li>
+    <li>RGB-value</li>
+    <li>Hexadecimal-value.</li>
+  </ul>
+  <p>Colors can be saved to 10 fields that hold color's hexadecimal
+    value and sample of that color.</p>
+  <h3>Licence</h3>
+  <pre style="color:inherit;">
+      MIT License
+
+      Copyright &copy 2019 Niklas Seppälä
+      
+      Permission is hereby granted, free of charge, to any person obtaining a copy
+      of this software and associated documentation files (the "Software"), to deal
+      in the Software without restriction, including without limitation the rights
+      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+      copies of the Software, and to permit persons to whom the Software is
+      furnished to do so, subject to the following conditions:
+      
+      The above copyright notice and this permission notice shall be included in all
+      copies or substantial portions of the Software.
+      
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+      SOFTWARE.
+  </pre>
+</div>
+
+{% endblock header %}
+{% block footer %}{% endblock footer %}
