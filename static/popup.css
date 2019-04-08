@@ -1,0 +1,22 @@
+#sidepanel-popup {
+  position: absolute;
+  flex-direction: column;
+  width: 105px !important;
+  height: 70px !important;
+  z-index: 99;
+  margin: 0px;
+  background-color: #2e3020;
+}
+#sidepanel-popup div {
+  border: none !important;
+  background: inherit;
+  width: 90% !important;
+}
+#sidepanel-popup div * {
+  margin: 2px;
+}
+#sidepanel-popup h6 {
+  margin: 0px;
+}
+
+/*# sourceMappingURL=popup.css.map */

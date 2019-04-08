@@ -70,7 +70,10 @@ function getBrightness(color) {
  */
 function shadeColor(color, percent) {
     color = (color.includes("rgb")) ? RGBtoHex(color) : color;
-    let rgb = [parseInt(color.substring(1, 3), 16), parseInt(color.substring(3, 5), 16), parseInt(color.substring(5, 7), 16)]
+    const rgb = [parseInt(color.substring(1, 3), 16),
+        parseInt(color.substring(3, 5), 16),
+        parseInt(color.substring(5, 7), 16)
+    ];
     for (let i = 0; i < rgb.length; i++) {
         rgb[i] = parseInt(rgb[i] * (100 + percent) / 100);
         rgb[i] = rgb[i] < 255 ? rgb[i] : 255;        

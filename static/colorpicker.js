@@ -41,6 +41,7 @@ $(function () {
     const sliderContex = colorSlider.getContext("2d");
 
     // Dynamic props
+    let popupTarget;
     let sliderColor;
     let boxP_X;
     let boxP_Y;
@@ -63,7 +64,7 @@ $(function () {
     * Sets event-target as moved element variable.
     * Hides cursor.
     */
-    $(boxPointer).mousedown(function () {
+    $(boxPointer).mousedown(function (e) {
         moveElement = boxPointer;
         $("body").css("cursor", "none");
     });
@@ -73,7 +74,7 @@ $(function () {
     * Sets event-target as moved element variable.
     * Hides cursor.
     */
-    $(sliderPointer).mousedown(function () {
+    $(sliderPointer).mousedown(function (e) {
         moveElement = sliderPointer;
         $("body").css("cursor", "none");
     });
@@ -309,7 +310,20 @@ $(function () {
     $(window).resize(function () {
         window.matchMedia("(max-width: 550px)").matches ? shrinkCanvases(313.0/400.0) : growCanvases(400.0/313.0);
         fixPointers(boxP_X, boxP_Y, sliderP_X)
+        window.matchMedia("(min-width: 550px)").matches ? fixPopups() : fixPopupsSmall();
     });
+
+    function fixPopups() {
+        const popup = $("#sidepanel-popup")
+        $(popup).css("left", $(sidepanel).offset().left - 125 + "px");
+        $(popup).css("top", $(popupTarget).offset().top - $(popup).height() / 2  + "px");
+    }
+
+    function fixPopupsSmall() {
+        const popup = $("#sidepanel-popup")
+        $(popup).css("left", $(popupTarget).offset().left - $(popup).width() / 2 + "px");
+        $(popup).css("top", $(popupTarget).offset().top - $(popup).height() * 2  + "px");
+    }
 
     /**
      * Shrinks canvases to 313px width. Only resizes
@@ -382,12 +396,13 @@ $(function () {
 
     //------------- Sidepanel events and functionality --------------//
 
+    let eventSourceDivId;
+    let sidePanelHidden = true;
+
     /**
      * Sets click eventhandlers to saved color elements.
      */
     function savedColorEvents() {
-        const sideColors = $("#sidepanel > div");
-        let sidePanelHidden = true;
         $.each($(".saved-color"), function (i, elem) {
 
             /**
@@ -405,58 +420,41 @@ $(function () {
              * hides panel. VISIBLE/HIDDEN-state can be monitored with sidePanelHidden-flag.
              */
             $(elem).click(function (e) {
-                let backgroundColor = formatColor(e);
-                if (sidePanelHidden) {
-                    // Sidepanel is hidden. Lets fill colors to it and change it to visible.
-
-                    let shadedColor = backgroundColor;
-                    let brigthColor = backgroundColor;
-
-                    $(sideColors[5]).css("background", shadedColor);
-                    $(sideColors[5].firstChild).text(shadedColor);
-                    getBrightness(shadedColor) < 170 ? sideColors[5].firstChild.style.color = "#e6e6e6"
-                                                     : sideColors[5].firstChild.style.color = "#000000";
-
-                    // Creates and displays 5 brighter colors.
-                    for (let i = 4; i >= 0; i--)
-                        brigthColor = addShade(brigthColor, i, 15);
-
-                    // Creates and displays 5 darker colors.
-                    for (let i = 6; i < sideColors.length; i++)
-                        shadedColor = addShade(shadedColor, i, -15);
-
-                    // Changes sidepanel to visible and togles visibility flag to false.
-                    $("#sidepanel").css("visibility", "visible");
-                    sidePanelHidden = false;
-                }
-                else {
-                    // Sidepanel is open. Let's close it.
-                    $("#sidepanel").css("visibility", "hidden");
-                    sidePanelHidden = true;
-                }
+                sidePanelHidden ? createSidepanel(formatColor(e)) : hideSidepanel();
             });
         });
+    }
 
-        /**
-         * Helper function to determine who set off the event.
-         * 
-         * If event source was color-div, color format is in rgb.
-         * Else color format is hexadecimal, and can be returned as the
-         * result. RGB needs to be converted using RGBtoHex(color) function.
-         * @param {Event} event 
-         */
-        function formatColor(event) {
-            switch (event.target.className) {
-                case "color-value":
-                    return event.target.innerText;
-                case "saved-sample":
-                    return RGBtoHex(event.target.style.background);
-                default:
-                    return event.target.getElementsByTagName("label")[0].innerText;
-            }
-        }
+    function hideSidepanel() {
+        $("#sidepanel").css("visibility", "hidden");
+        sidePanelHidden = true;
+    }
 
-        /**
+    function createSidepanel(sourceColor) {
+        const sideColors = $("#sidepanel > div");
+        let shadedColor = sourceColor;
+        let brigthColor = sourceColor;
+
+        $(sideColors[5]).css("background", shadedColor);
+        $(sideColors[5].firstChild).text(shadedColor);
+        getBrightness(shadedColor) < 170 ? sideColors[5].firstChild.style.color = "#e6e6e6"
+                                         : sideColors[5].firstChild.style.color = "#000000";
+
+        // Creates and displays 5 brighter colors.
+        for (let i = 4; i >= 0; i--)
+            brigthColor = addShade(brigthColor, i, 15);
+
+        // Creates and displays 5 darker colors.
+        for (let i = 6; i < sideColors.length; i++)
+            shadedColor = addShade(shadedColor, i, -15);
+
+        // Changes sidepanel to visible and togles visibility flag to false.
+        $("#sidepanel").css("visibility", "visible");
+        sidePanelHidden = false;
+    }
+
+
+    /**
          * This function adds shade to given color ands sets
          * it as background of i:th element.
          * 
@@ -473,6 +471,7 @@ $(function () {
          * @returns {string} Shaded color.
          */
         function addShade(color, index, percent) {
+            const sideColors = $("#sidepanel > div");
             const colorElem = sideColors[index].firstChild;
             color = shadeColor(color, percent);
             $(sideColors[index]).css("background", color);
@@ -481,5 +480,86 @@ $(function () {
                                        : $(colorElem).css("color", "#000000");
             return color;
         }
+
+
+    /**
+         * Helper function to determine who set off the event.
+         * 
+         * If event source was color-div, color format is in rgb.
+         * Else color format is hexadecimal, and can be returned as the
+         * result. RGB needs to be converted using RGBtoHex(color) function.
+         * @param {Event} event 
+         */
+        function formatColor(event) {
+            switch (event.target.className) {
+                case "color-value":
+                    eventSourceDivId = event.target.parentElement.id;
+                    return event.target.innerText;
+                case "saved-sample":
+                    eventSourceDivId = event.target.parentElement.id;
+                    return RGBtoHex(event.target.style.background);
+                default:
+                    eventSourceDivId = event.target.id;
+                    return event.target.getElementsByTagName("label")[0].innerText;
+            }
+        }
+
+
+    function createPopup(eTarget, message, okId, noId, forSmall=false) {
+        popupTarget = eTarget;
+        const offset = $(eTarget).offset();
+        popupActive = true;
+        const sidepanel = $("#sidepanel");
+        $(sidepanel).append('<div id="sidepanel-popup"></div>');
+        const popup = $("#sidepanel-popup");
+        let elems = [];
+        let header = document.createElement("h6");
+        header.innerText = message;
+        elems.push(header);
+        let yesNoDiv = document.createElement("div");
+        $(yesNoDiv).append('<img id="' + okId + '" width=34 src="/static/icons/icon-ok.svg"></img>');
+        $(yesNoDiv).append('<img id="' + noId + '" width=35 src="/static/icons/icon-delete.svg"></img>');
+        elems.push(yesNoDiv);
+        $(popup).append(elems);
+
+        if (forSmall) {
+            $(popup).css("left", $(popupTarget).offset().left - $(popup).width() / 2 + "px")
+            $(popup).css("top", $(popupTarget).offset().top - $(popup).height() * 2  + "px")
+        }
+        else {
+            $(popup).css("left", $(sidepanel).offset().left - 125 + "px");
+            $(popup).css("top", offset.top - $(popup).height() / 2 + "px");
+        }
     }
+
+
+    let popupActive = false
+    $($("#sidepanel > div")).click(function (e) {
+        const eventTarget = e.target
+        const elemList = eventTarget.getElementsByTagName("label");
+        // TODO what is this shit
+        const newColor = elemList.length > 0 ? elemList[0].innerText.length < 1 ? elemList[0].innerHTML
+                                                                                : elemList[0].innerText
+                                             : eventTarget.innerText.length < 1 ? eventTarget.innerHTML
+                                                                                : eventTarget.innerText;
+
+        if (!popupActive) {
+            window.matchMedia("(max-width: 550px)").matches ? createPopup(eventTarget, newColor, "ok-icon", "no-icon", true)
+                                                            : createPopup(eventTarget, newColor, "ok-icon", "no-icon");
+            $("#ok-icon").click(function (e) {
+                
+                $("#" + eventSourceDivId + "> label").text(newColor);
+                $("#" + eventSourceDivId + "> div").css("background-color", newColor);
+                createSidepanel(newColor);
+
+                $("#sidepanel-popup").remove();
+                popupActive = false;
+            });
+
+            $("#no-icon").click(function (e) { 
+                $("#sidepanel-popup").remove();
+                popupActive = false;
+            });
+        }
+    });
 });
