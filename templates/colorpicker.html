@@ -7,6 +7,8 @@
 {% block scripts %}
 {{ super() }}
   <!-- Scripts -->
+  <script src="{{ url_for('static', filename='functions.js') }}"></script>
+  <script src="{{ url_for('static', filename='small.js') }}"></script>
   <script src="{{ url_for('static', filename='colorpicker.js') }}"></script>{% endblock scripts %}
 {% block title %}Colorpicker{% endblock title %}
 {% block content %}

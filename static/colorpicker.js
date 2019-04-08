@@ -22,103 +22,6 @@
  */
 
 
-//----------------------- GLOBAL FUNCTIONS -------------------------// 
-
-/**
- * Transmutes RGB-values to hexadecimal format.
- * 
- * Parses rgb values to list.
- * Appends values in hexadecimal to result string.
- *  
- * @param   {string} RGB_string Color in rgb.
- * @returns {string} (#)Hexadecimal color value.
- */
-function RGBtoHex(RGB_string) {
-    const nums = RGB_string.match(/\d+/g).map(Number);
-    let results = "#";
-    nums.forEach(number => {
-        results += number.toString(16).length < 2 ?  "0" + number.toString(16) : number.toString(16);
-    });
-    return results;
-}
-
-/**
- * 
- * @param {*} array 
- * @param {boolean} aplha 
- */
-function RGB_ArrayToHex(array, aplha=false) {
-    let length;
-    aplha ? length = 4 : length = 3;
-    let result = "#";
-    for (let i = 0; i < length; i++)
-        result += array[i].toString(16).length < 2 ? "0" + array[i].toString(16) : array[i].toString(16);
-    return result;
-}
-
-/**
- * Computes color's brightness by adding up
- * Colors RGB values.
- * 
- * @param   {string} color Color
- * @returns {number} Color's brightness. 
- */
-function getBrightness(color) {
-
-    if (color.includes("#")) {
-        return parseInt(color.substring(1, 3), 16) +
-            parseInt(color.substring(3, 5), 16) +
-            parseInt(color.substring(5, 7), 16);
-    }
-    else if (color.includes("rgb")) {
-        let result = 0;
-        const values = color.match(/\d+/g).map(Number);
-        values.forEach(value => { result += value });
-        return result;
-    }
-    return "incorrect input";
-}
-
-/**
- *  Shades given color percentually. Allowed
- *  color formats are rgb and hexadecimal.
- *  Negative percent argument darkens color,
- *  positive brightens it.
- * 
- * @param   {string} color     RGB or (#)hexadecimal.
- * @param   {number} percent   Percentual effect of shading.
- * @returns {string}           Shaded color in hexadecimal.
- */
-function shadeColor(color, percent) {
-
-    color = (color.includes("rgb")) ? RGBtoHex(color) : color;
-
-    let R = parseInt(color.substring(1, 3), 16);
-    let G = parseInt(color.substring(3, 5), 16);
-    let B = parseInt(color.substring(5, 7), 16);
-
-    R = parseInt(R * (100 + percent) / 100);
-    G = parseInt(G * (100 + percent) / 100);
-    B = parseInt(B * (100 + percent) / 100);
-
-    R = (R < 255) ? R : 255;
-    G = (G < 255) ? G : 255;
-    B = (B < 255) ? B : 255;
-
-    const RR = ((R.toString(16).length < 2) ? "0" + R.toString(16) : R.toString(16));
-    const GG = ((G.toString(16).length < 2) ? "0" + G.toString(16) : G.toString(16));
-    const BB = ((B.toString(16).length < 2) ? "0" + B.toString(16) : B.toString(16));
-
-    return "#" + RR + GG + BB;
-}
-
-/**
- * Invokes arrow-function
- * @param {*} func anon function
- */
-function invoke(func) { func(); }
-
-
 //--------------------------- DOCUMENT READY ---------------------------------//
 
 $(function () {
@@ -144,12 +47,6 @@ $(function () {
     let sliderP_X;
     
     //---------- Initialization of components ---------------//
-
-    // media-query for small screens
-    if (window.matchMedia("(max-width: 550px)").matches) {
-        colorBox.width = colorBoxCanvas.width = 313;
-        colorSlider.width = colorSliderCanvas.width = 313;
-    }
 
     setUpSlider(); // Creates Color-strip to colorslider canvas.
     fixPointers(colorBox.width - 20, 20, colorSlider.width / 3.5);
